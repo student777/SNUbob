@@ -1,0 +1,162 @@
+{% extends "layout.html" %}
+{% block extra_head%}
+<style>
+    .icon{
+        color: black;
+        font-size:10px;
+    }
+    .date{
+        font-size: 12px;
+    }
+    .form-group{
+        width:100%;
+        margin-bottom: 10px;
+    }
+    #addComment{
+        width: 30%;
+        margin-bottom:10px;
+    }
+    div>div>div>div>a{
+        width: 16%;
+    }
+</style>
+<script>
+    $(function(){
+        var tex = $("textarea:first");
+        tex.className = "form-control";
+        tex.attr("rows", "3");
+        tex.css("width", "100%");
+        $("form div").contents().filter(function(){ return this.nodeType != 1; }).remove();
+    });
+    $(function(){
+        $("#comment_form").find("input[name=star]").remove()
+        $("#star_rate").rating();
+    })
+    $(function(){
+        $("#comment_form").submit(function() {
+            var url = $(this).attr("action");
+            var content_value = $(this).find("textarea[name=content]").val();
+            var star = $("#star_rate")[0].value;
+            if(content_value ==""){
+                $.toaster({
+                        title: 'fail',
+                        priority: 'danger',
+                        message: '내용을 입력해 주세요'
+                    });
+                return false;
+            }
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: {
+                    content: content_value,
+                    star: star,
+                }
+            }).fail(function() {
+                $.toaster({
+                        title: 'fail',
+                        priority: 'danger',
+                        message: '다시 시도해 주세요'
+                });
+            }).done(function(html) {
+                $("#comment_list").prepend(html);
+                $.toaster({
+                        title: 'success',
+                        priority: 'success',
+                        message: '새 댓글이 등록되었습니다'
+                });
+                $("textarea")[0].value="";
+            });
+            return false;
+        });
+        $(document).on('click', '#delete_comment', function(){
+            if ( confirm("Are you sure?") ) {
+                var url = $(this).attr("href");
+                var comment_id = $(this).data("comment-id");
+                $.ajax({
+                    url: url,
+                    method: "POST"
+                }).fail(function() {
+                    $.toaster({
+                        title: 'fail',
+                        priority: 'danger',
+                        message: '다시 시도해 주세요'
+                    });
+                }).done(function() {
+                    $("#" + comment_id).remove();
+                    $.toaster({
+                        title: 'success',
+                        priority: 'success',
+                        message: '댓글을 삭제하였습니다'
+                    });
+                });
+            }
+            return false;
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="font-size:20px;">
+                    {{ bob.name|safe }}
+                </div>
+                 <div class="panel-heading" style="padding:5px 10px 5px 10px">
+                    <span>작성자: {{ bob.author}}&nbsp;</span>
+                    <span>평점:&nbsp;{{ bob.score}}/5.0(총 {{ bob.cal_mean }}건)</span>
+                    <span>식당: {{ bob.place }}</span>
+                    <span style="float:right"class="date">{{ bob.created_at|date:"y.m.d H:i:s" }}</span>
+                </div>
+                <div class="panel-body">
+                    {% if bob.image %}
+                        <p><img src="{{ bob.image.url }}" /></p>
+                    {% else %}
+                        {% load static %}
+                        <img src="{% static 'img_default.jpg' %}">
+                    {% endif %}
+                    {{ bob.content|linebreaksbr }}
+                </div>
+
+                <div class="panel">
+                    <form id="comment_form" class = "form-inline" action="{% url "bobshow:comment_new" bob.pk %}" method="POST">
+                        <div class="form-group text-center">
+                        {% csrf_token %}
+                            {{ comment_form }}
+                        <input id="star_rate" class="rating" data-min="0" data-max="5" data-step="1">
+                        <input id="addComment" style="float:right" type="submit" value="add a comment" class="btn btn-default" />
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel panel-default">
+                  <div class="panel-heading ">평가</div>
+                      <table class="table" id="comment_list">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>별점</th>
+                            <th>글쓴이</th>
+                            <th>내용</th>
+                            <th>수정/삭제</th>
+                            <th>날짜</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for comment  in bob.comment_set.all %}
+                                {% include "bobshow/comment_row.html" %}
+                            {% empty %}
+                                <tr><td>등록된 댓글이 없습니다.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</div>
+{% endblock %}
