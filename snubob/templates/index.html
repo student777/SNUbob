@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% load bootstrap3 %}
+{% load thumbnail %}
+{% block extra_head %}
+<style>
+.thumbnail .caption div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+}
+.thumbnail .caption {
+    height: 50px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+iiiiiiiiiiiiiiiiindex
+2015년 8월 27일 ㅓ저녁
+{% endblock %}
