@@ -3,17 +3,25 @@ from bobshow.models import Bob, Comment
 from django.contrib.auth.models import User
 from django.contrib import messages
 from bobshow.forms import BobForm, CommentForm
-from django.http import Http404, HttpResponse
+from django.core.paginator import InvalidPage, Paginator
+from django.http import Http404
 
 
-def index(request):
+def search(request):
     if request.GET.get('name'):
         name = request.GET.get('name')
-        bob_list = Bob.objects.filter(name__startswith=name)
+        bob_list = Bob.objects.filter(name__contains=name)
     else:
         bob_list = Bob.objects.all()
-    return render(request, "bobshow/index.html", {
-        'bob_list': bob_list,
+    page_number = int(request.GET.get('page', 1))
+    paginate_by = 8
+    paginator = Paginator(bob_list, paginate_by)
+    try:
+        page = paginator.page(page_number)
+    except InvalidPage:
+        raise Http404('invalid page {}'.format(page_number))
+    return render(request, "bobshow/search.html", {
+        'bob_list': page.object_list, 'page': page,
         })
 
 
@@ -22,6 +30,13 @@ def detail(request, pk):
     comment_form = CommentForm(auto_id=False)
     return render(request, "bobshow/detail.html", {
         'bob': bob, 'comment_form': comment_form,
+        })
+
+
+def billboard(request):
+    bob_list = Bob.objects.order_by('-score')[:10]
+    return render(request, "bobshow/billboard.html", {
+        'bob_list': bob_list,
         })
 
 

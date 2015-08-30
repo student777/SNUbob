@@ -13,7 +13,7 @@ class Bob(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     place = models.ForeignKey('Place')
-    star = models.IntegerField()
+    star = models.PositiveSmallIntegerField()
     score = models.FloatField()
 
 
@@ -28,7 +28,6 @@ class Bob(models.Model):
         score = a/n
         self.score = round(float(score), 2)
         self.save()
-        return n
 
 
 class Place(models.Model):

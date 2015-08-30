@@ -1,13 +1,13 @@
 <tr>
   <td>
     {% if forloop.counter %}
-      <span style="display:inline-block">{{ forloop.counter }}</span>
+      <span style="font-size:8px">{{ forloop.counter }}</span>
    {% else %}
       <span style="color:red; font-family:bold">new</span>
    {% endif %}
+    {{ comment.author }}
   </td>
-  <td>{{ comment.star }}</td>
-  <td>{{ comment.author }}</td>
+  <td class="stars">{{ comment.star }}</td>
   <td>{{ comment.content }}</td>
   <td>
       <a href=""><span class="icon glyphicon glyphicon-edit" aria-hidden="true"></span></a>

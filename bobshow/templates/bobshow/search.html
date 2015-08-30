@@ -15,11 +15,27 @@
     height: 50px;
 }
 </style>
+<script>
+$("input").keypress(function(event) {
+    if (event.which == 13) {
+        event.preventDefault();
+        $("form").submit();
+    }
+});
+</script>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
+        <div class="col-sm-12">
+          <form action="/bobshow/" class="form" method="GET">
+              <div class="form-group text-center">
+                <input type="text" placeholder="ex)제육볶음 (엔터키를 입력하세요)" class="form-control" name="name" style="display:inline; width:80%">
+                <button type="submit" class="btn btn-default" style="display:inline-block; width:19%">search</button>
+              </div>
+          </form>
+        </div>
         {% for bob in bob_list %}
         <div class="col-xs-6 col-sm-4 col-md-3">
             <div class="thumbnail">
@@ -33,20 +49,21 @@
                         <img src="{% static 'img_default.jpg' %}">
                     {% endif %}
                     <div class="caption">
-                        <div><strong>{{ bob.name }}</strong></div>
-                        <span> {{bob.place}} </span>
-                        <span> {{bob.score}} </span>
+                        <div><strong>{{ bob.name }}</strong><span>-{{bob.place}}</span></div>
+                        <span> 평점:{{bob.score}} </span>
                     </div>
                 </a>
             </div>
         </div>
         {% empty %}
-            <div class="alert alert-warning">
-                등록된 포스팅이 없습니다.
+        <div class="alert alert-warning">
+                검색 결과가 없습니다.
             </div>
         {% endfor %}
         </div>
-
+        <div class="text-center">
+            {% bootstrap_pagination page %}
+        </div>
     </div>
-
+</div>
 {% endblock %}

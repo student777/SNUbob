@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block extra_head%}
 <style>
+    #addComment{
+        width:50%;
+    }
     .icon{
         color: black;
         font-size:10px;
@@ -11,13 +14,6 @@
     .form-group{
         width:100%;
         margin-bottom: 10px;
-    }
-    #addComment{
-        width: 30%;
-        margin-bottom:10px;
-    }
-    div>div>div>div>a{
-        width: 16%;
     }
 </style>
 <script>
@@ -31,6 +27,12 @@
     $(function(){
         $("#comment_form").find("input[name=star]").remove()
         $("#star_rate").rating();
+        var len = {{ bob.comment_set.count}};
+        for(var i=0;i<len;i++){
+            var k = parseInt($(".stars")[i].innerHTML);
+            var str = '<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>'
+            $(".stars")[i].innerHTML=str.repeat(k);
+        }
     })
     $(function(){
         $("#comment_form").submit(function() {
@@ -107,53 +109,51 @@
                 </div>
                  <div class="panel-heading" style="padding:5px 10px 5px 10px">
                     <span>작성자: {{ bob.author}}&nbsp;</span>
-                    <span>평점:&nbsp;{{ bob.score}}/5.0(총 {{ bob.cal_mean }}건)</span>
+                    <span>평점:&nbsp;{{ bob.score}}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
                     <span>식당: {{ bob.place }}</span>
                     <span style="float:right"class="date">{{ bob.created_at|date:"y.m.d H:i:s" }}</span>
                 </div>
                 <div class="panel-body">
                     {% if bob.image %}
-                        <p><img src="{{ bob.image.url }}" /></p>
+                        <div class="text-center"><img src="{{ bob.image.url }}" /></div>
                     {% else %}
                         {% load static %}
-                        <img src="{% static 'img_default.jpg' %}">
+                        <div class="text-center"><img src="{% static 'img_default.jpg' %}"></div>
                     {% endif %}
                     {{ bob.content|linebreaksbr }}
                 </div>
-
-                <div class="panel">
-                    <form id="comment_form" class = "form-inline" action="{% url "bobshow:comment_new" bob.pk %}" method="POST">
-                        <div class="form-group text-center">
-                        {% csrf_token %}
-                            {{ comment_form }}
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">평가하기</div>
+                <form id="comment_form" class = "form-inline" action="{% url "bobshow:comment_new" bob.pk %}" method="POST">
+                    <div class="form-group text-center">
+                    {% csrf_token %}
+                        {{ comment_form }}
                         <input id="star_rate" class="rating" data-min="0" data-max="5" data-step="1">
-                        <input id="addComment" style="float:right" type="submit" value="add a comment" class="btn btn-default" />
-                        </div>
-                    </form>
-                </div>
-
-                <div class="panel panel-default">
-                  <div class="panel-heading ">평가</div>
-                      <table class="table" id="comment_list">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>별점</th>
-                            <th>글쓴이</th>
-                            <th>내용</th>
-                            <th>수정/삭제</th>
-                            <th>날짜</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            {% for comment  in bob.comment_set.all %}
-                                {% include "bobshow/comment_row.html" %}
-                            {% empty %}
-                                <tr><td>등록된 댓글이 없습니다.</td></tr>
-                            {% endfor %}
-                        </tbody>
-                      </table>
-                </div>
+                        <input id="addComment" type="submit" value="submit" class="btn btn-default"/>
+                    </div>
+                </form>
+            </div>
+            <div class="panel panel-default">
+                  <table class="table" id="comment_list">
+                    <thead>
+                      <tr>
+                        <th>글쓴이</th>
+                        <th>별점</th>
+                        <th>내용</th>
+                        <th>수정/삭제</th>
+                        <th>날짜</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment  in bob.comment_set.all %}
+                            {% include "bobshow/comment_row.html" %}
+                        {% empty %}
+                            <tr><td>등록된 댓글이 없습니다.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
             </div>
             <hr/>
         </div>
