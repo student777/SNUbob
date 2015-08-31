@@ -11,7 +11,7 @@ DATABASES = {
         'PORT': '8000',
     },
 }
-
+#test
 ALLOW_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'staticfiles')
