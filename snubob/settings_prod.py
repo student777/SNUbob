@@ -7,8 +7,8 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'ubuntu',
         'PASSWORD': '1234',
-        'HOST': '172.31.23.193',
-        'PORT': '8000',
+        #'HOST': '172.31.23.193',
+        #'PORT': '8000',
     },
 }
 #test
