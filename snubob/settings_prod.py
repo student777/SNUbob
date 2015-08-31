@@ -7,13 +7,8 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'ubuntu',
         'PASSWORD': '1234',
-<<<<<<< HEAD
-        #'HOST': '172.31.23.193',
-        #'PORT': '8000',
-=======
-        #'HOST': '',
-        #'PORT': '',
->>>>>>> origin/master
+	# 'HOST': ,
+	# 'PORT': ,
     },
 }
 ALLOW_HOSTS = ['*']
