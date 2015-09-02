@@ -56,7 +56,7 @@ def new(request):
     else:
         form = BobForm()
     return render(request, 'form.html', {
-        'form': form, 'title': 'New Post'})
+        'form': form, 'title': '식사 평가하기'})
 
 
 def comment_new(request, pk):
