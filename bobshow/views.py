@@ -49,10 +49,10 @@ def new(request):
                 bob.author = request.user
             else:
                 bob.author = User.objects.get(username='noname')
-            bob.score = bob.star
+            bob.score = -1
             bob.save()
             messages.success(request, "새 글이 등록되었습니다")
-            return redirect('bobshow:index')
+            return redirect('bobshow:detail', bob.id)
     else:
         form = BobForm()
     return render(request, 'form.html', {

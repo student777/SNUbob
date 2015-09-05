@@ -13,7 +13,6 @@ class Bob(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     place = models.ForeignKey('Place')
-    star = models.PositiveSmallIntegerField()
     score = models.FloatField()
 
 
@@ -21,13 +20,16 @@ class Bob(models.Model):
         return self.name
 
     def cal_mean(self):
-        n = self.comment_set.count() + 1
-        a = self.star
-        for i in self.comment_set.all():
-            a = a + i.star
-        score = a/n
-        self.score = round(float(score), 2)
-        self.save()
+        n = self.comment_set.count()
+        if n:
+            self.score = -1
+        else:
+            a = 0
+            for i in self.comment_set.all():
+                a = a + i.star
+            score = a/n
+            self.score = round(float(score), 2)
+            self.save()
 
 
 class Place(models.Model):

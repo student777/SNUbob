@@ -112,11 +112,18 @@
                 </div>
                  <div class="panel-heading" style="padding:5px 10px 5px 10px">
                     <span>작성자: {{ bob.author}}&nbsp;</span>
-                    <span>평점:&nbsp;{{ bob.score}}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
+                    {% if bob.score == -1 %}
+                    <span>평점 없음</span>
+                    {% else %}
+                    <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
+                    {% endif %}
                     <span>식당: {{ bob.place }}</span>
                     <span style="float:right"class="date">{{ bob.created_at|date:"y.m.d H:i:s" }}</span>
                 </div>
                 <div class="panel-body">
+                    {% if bob.image %}
+                        <div><img src="{{ bob.image.url }}" /></div>
+                    {% endif %}
                     {% for photo in bob.photo_set.all %}
                         <div><img src="{{ photo.image.url }}" /></div>
                     {% empty %}
