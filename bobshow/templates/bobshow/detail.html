@@ -112,57 +112,54 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="font-size:20px;">
-                    <span>{{ bob.name|safe }}</span>
-                    <a class="btn btn-default" style="float:right" href="{% url 'bobshow:photo_new' bob.pk %}">사진 추가</a>
-                </div>
-                 <div class="panel-heading" style="padding:5px 10px 5px 10px">
-                    <span>작성자: {{ bob.author}}&nbsp;</span>
-                    {% if bob.score == -1 %}
-                    <span>평점 없음</span>
-                    {% else %}
-                    <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
-                    {% endif %}
-                    <span>식당: {{ bob.place }}</span>
-                </div>
-                {% include "bobshow/gallery.html" %}
-            <div class="panel panel-default">
-                <div class="panel-heading">평가하기</div>
-                <form id="comment_form" class = "form-inline" action="{% url "bobshow:comment_new" bob.pk %}" method="POST">
-                    <div class="form-group text-center">
-                    {% csrf_token %}
-                        {{ comment_form }}
-                        <input id="star_rate" class="rating" data-min="0" data-max="5" data-step="1">
-                        <input id="addComment" type="submit" value="submit" class="btn btn-default"/>
-                    </div>
-                </form>
-            </div>
-            <div class="panel panel-default">
-                  <table class="table" id="comment_list">
-                    <thead>
-                      <tr>
-                        <th>글쓴이</th>
-                        <th>별점</th>
-                        <th>내용</th>
-                        <th>수정/삭제</th>
-                        <th>날짜</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for comment  in bob.comment_set.all %}
-                            {% include "bobshow/comment_row.html" %}
-                        {% empty %}
-                            <tr><td>등록된 댓글이 없습니다.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
-            </div>
-            </div>
-            <hr/>
+    <div class="panel panel-default">
+        <div class="panel-heading" style="font-size:20px;">
+            <span>{{ bob.name|safe }}</span>
+            <a class="btn btn-default" style="float:right" href="{% url 'bobshow:photo_new' bob.pk %}">사진 추가</a>
         </div>
+         <div class="panel-heading" style="padding:5px 10px 5px 10px">
+            <span>작성자: {{ bob.author}}&nbsp;</span>
+            {% if bob.score == -1 %}
+            <span>평점 없음</span>
+            {% else %}
+            <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
+            {% endif %}
+            <span>식당: {{ bob.place }}</span>
+        </div>
+        {% include "bobshow/gallery.html" %}
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">평가하기</div>
+        <form id="comment_form" class = "form-inline" action="{% url "bobshow:comment_new" bob.pk %}" method="POST">
+            <div class="form-group text-center">
+            {% csrf_token %}
+            <input id="star_rate" class="rating" data-min="0" data-max="5" data-step="1">
+                {{ comment_form }}
+
+                <input id="addComment" type="submit" value="submit" class="btn btn-default"/>
+            </div>
+        </form>
+    </div>
+    <div class="panel panel-default">
+          <table class="table" id="comment_list">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>별점</th>
+                <th>내용</th>
+                <th>날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for comment  in bob.comment_set.all %}
+                    {% include "bobshow/comment_row.html" %}
+                {% empty %}
+                    <tr><td>등록된 댓글이 없습니다.</td></tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    </div>
+    <hr/>
 </div>
 {% endblock %}
