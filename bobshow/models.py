@@ -37,6 +37,14 @@ class Place(models.Model):
         return self.name
 
 
+class Photo(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
+    bob = models.ForeignKey(Bob)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     bob = models.ForeignKey(Bob)
