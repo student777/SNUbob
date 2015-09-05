@@ -1,5 +1,5 @@
 from django import forms
-from bobshow.models import Bob, Comment
+from bobshow.models import Bob, Comment, Photo
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -22,10 +22,13 @@ class BobForm(forms.ModelForm):
         return name
 
 
-
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('content', 'star' )
+        fields = ('content', 'star')
 
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ('image', )

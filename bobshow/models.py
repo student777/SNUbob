@@ -15,7 +15,6 @@ class Bob(models.Model):
     place = models.ForeignKey('Place')
     score = models.FloatField()
 
-
     def __str__(self):
         return self.name
 

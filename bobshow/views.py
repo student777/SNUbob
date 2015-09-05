@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bobshow.models import Bob, Comment
+from bobshow.models import Bob  # Comment
 from django.contrib.auth.models import User
 from django.contrib import messages
-from bobshow.forms import BobForm, CommentForm
+from bobshow.forms import BobForm, CommentForm, PhotoForm
 from django.core.paginator import InvalidPage, Paginator
 from django.http import Http404
 
@@ -78,3 +78,22 @@ def comment_new(request, pk):
                     'comment': comment,
                 })
     return redirect('bobshow:detail', pk)
+
+
+def photo_new(request, pk):
+    bob = get_object_or_404(Bob, pk=pk)
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.bob = bob
+            if request.user.is_authenticated():
+                photo.author = request.user
+            else:
+                photo.author = User.objects.get(username='noname')
+            photo.save()
+            return redirect('bobshow:detail', pk)
+    else:
+        form = PhotoForm()
+    return render(request, 'form.html', {
+        'form': form, 'title': '사진 업로드'})

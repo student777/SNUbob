@@ -44,6 +44,10 @@ $("input").keypress(function(event) {
                         {% thumbnail bob.image "300x300" crop="center" quality=80 as im %}
                             <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
                         {% endthumbnail %}
+                    {% elif bob.photo_set.first.image %}
+                        {% thumbnail bob.photo_set.first.image "300x300" crop="center" quality=80 as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+                        {% endthumbnail %}
                     {% else %}
                         {% load static %}
                         <img src="{% static 'img_default.jpg' %}">
