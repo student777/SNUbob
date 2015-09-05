@@ -20,7 +20,7 @@ class Bob(models.Model):
 
     def cal_mean(self):
         n = self.comment_set.count()
-        if n:
+        if not n:
             self.score = -1
         else:
             a = 0
