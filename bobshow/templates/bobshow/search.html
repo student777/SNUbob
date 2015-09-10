@@ -70,8 +70,9 @@ $("input").keypress(function(event) {
         {% endfor %}
         </div>
         <div class="text-center">
-            {% bootstrap_pagination page %}
+            {% bootstrap_pagination page extra="name="|add:name  %}
         </div>
     </div>
 </div>
+
 {% endblock %}

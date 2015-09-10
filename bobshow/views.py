@@ -12,16 +12,17 @@ def search(request):
         name = request.GET.get('name')
         bob_list = Bob.objects.filter(name__contains=name)
     else:
+        name = ""
         bob_list = Bob.objects.all()
     page_number = int(request.GET.get('page', 1))
-    paginate_by = 8
+    paginate_by = 16
     paginator = Paginator(bob_list, paginate_by)
     try:
         page = paginator.page(page_number)
     except InvalidPage:
         raise Http404('invalid page {}'.format(page_number))
     return render(request, "bobshow/search.html", {
-        'bob_list': page.object_list, 'page': page,
+        'bob_list': page.object_list, 'page': page, 'name': name,
         })
 
 

@@ -16,7 +16,7 @@ class Bob(models.Model):
     score = models.FloatField()
 
     def __str__(self):
-        return self.name
+        return self.place.name + '/' + self.name
 
     def cal_mean(self):
         n = self.comment_set.count()
