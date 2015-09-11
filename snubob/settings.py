@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'bobshow',
     'sorl.thumbnail',
     'bootstrap3',
+    'smuggler',
 )
 
 MIDDLEWARE_CLASSES = (

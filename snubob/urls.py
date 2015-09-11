@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 
 urlpatterns = [
+    url(r'^admin/', include('smuggler.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'snubob.views.index', name='index'),
     url(r'^bobshow/', include('bobshow.urls', namespace='bobshow')),
