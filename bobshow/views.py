@@ -10,7 +10,7 @@ from django.http import Http404
 def search(request):
     if request.GET.get('name'):
         name = request.GET.get('name')
-        bob_list = Bob.objects.filter(name__contains=name)
+        bob_list = Bob.objects.filter(name__contains=name).order_by('place')
     else:
         name = ""
         bob_list = Bob.objects.all()
