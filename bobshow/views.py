@@ -15,7 +15,7 @@ def search(request):
         name = ""
         bob_list = Bob.objects.all()
     page_number = int(request.GET.get('page', 1))
-    paginate_by = 16
+    paginate_by = 32
     paginator = Paginator(bob_list, paginate_by)
     try:
         page = paginator.page(page_number)
