@@ -28,15 +28,19 @@
             {% endfor %}
         </ol>
         <div class="carousel-inner" role="listbox">
+            {% if bob.photo_set.first %}
+            <div class="item active">
+                <img src="{{ bob.photo_set.first.image.url }}" data-holder-rendered="true">
+            </div>
+            {% else %}
             <div class="item active">
                 <img src="{% static 'img_default.jpg' %}" data-holder-rendered="true">
             </div>
-
+            {% endif %}
             {% for photo in bob.photo_set.all %}
             <div class="item">
                 <img src="{{ photo.image.url }}" data-holder-rendered="true">
             </div>
-            {% empty %}
             {% endfor %}
         </div>
     {% endif %}
