@@ -74,6 +74,7 @@
                 });
             }).done(function(html) {
                 $("#comment_list").prepend(html);
+                $("#tofade").hide();
                 $.toaster({
                         title: 'success',
                         priority: 'success',
@@ -155,7 +156,7 @@
                 {% for comment  in bob.comment_set.all %}
                     {% include "bobshow/comment_row.html" %}
                 {% empty %}
-                    <tr><td>등록된 댓글이 없습니다.</td></tr>
+                    <tr id="tofade"><td>등록된 댓글이 없습니다.</td></tr>
                 {% endfor %}
             </tbody>
           </table>

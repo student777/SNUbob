@@ -27,6 +27,10 @@
                                 {% thumbnail bob.image "200x200" crop='center' quality=80 as im %}
                                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
                                 {% endthumbnail %}
+                            {% elif bob.photo_set.first %}
+                                {% thumbnail bob.photo_set.first.image "200x200" crop='center' quality=80 as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
+                                {% endthumbnail %}
                             {% else %}
                                 {% load static %}
                                 <img src="{% static 'img_default.jpg' %}" width="200px" height="200px">
@@ -37,7 +41,11 @@
                     {% if forloop.counter %}
                         <h3 style="background-color:#FFFF48; margin-top:0px">{{ forloop.counter }}위 평점: {{ bob.score }}<span style="font-size:15px">(총 {{ bob.comment_set.count|add:"1"}}건)</span></h3>
                         <h4 class="media-heading">{{ bob.place.name }}-{{ bob.name }}</h4>
-                        <h6>{{ bob.content|linebreaks|truncatechars:55 }}</h6>
+                        <h6>
+                        {% for comment in bob.comment_set.all %}
+                        {{ comment.content|linebreaks }}
+                        {% endfor %}
+                        </h6>
                     {% endif %}
                     </div>
                 </div>
