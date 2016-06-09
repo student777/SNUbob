@@ -7,7 +7,7 @@ import datetime
 
 def main():
     minisnu.update_menu()
-    f = open("/home/ubuntu/www/SNUbob/update_log", 'a')
+    f = open("update_log", 'a')
     f.write(datetime.date.today().isoformat())
     f.write('\n')
     f.close()

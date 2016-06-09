@@ -79,6 +79,8 @@ def parse_and_save_menu(a, b, date):
 def add_or_pass(place, name, date):
     admin = User.objects.get(username='admin')
     place_assigned = assign_place(place)
+    if place_assigned is None:
+        return
     bob_searched = Bob.objects.filter(place=place_assigned, name=name)
     if bob_searched.count() == 0:
         Bob(author=admin, place=place_assigned, content=date+'\n', score=-1, name=name).save()
@@ -111,6 +113,8 @@ def assign_place(place):
         return Place.objects.get(id=10)
     elif place.find('919') != -1:
         return Place.objects.get(id=11)
+    else:
+        return None
 
 
 def make_place():

@@ -7,7 +7,7 @@ from django.conf import settings
 
 class Bob(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
     content = models.TextField(blank=True, null=True,)
     created_at = models.DateTimeField(auto_now_add=True)
