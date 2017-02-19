@@ -1,9 +1,11 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snubob.settings')
 import django
-django.setup()
 import minisnu
 import datetime
+
+django.setup()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snubob.settings')
+
 
 def main():
     minisnu.update_menu()

@@ -4,14 +4,13 @@ from bobshow.models import Bob, Place
 from django.contrib.auth.models import User
 import datetime
 from datetime import timedelta
-import os
 
 
 def update_menu():
     dt = datetime.date.today()
     td = timedelta(days=1)
     for i in range(0, 7):
-        add_menu((dt+i*td).isoformat())
+        add_menu((dt + i * td).isoformat())
 
 
 def get_menu(year, month, day):
@@ -28,14 +27,14 @@ def get_menu_year(year):
     dt = datetime.date(year, 1, 1)
     td = timedelta(days=1)
     for i in range(0, 365):
-        add_menu((dt + i*td).isoformat())
+        add_menu((dt + i * td).isoformat())
 
 
 def add_menu(date):
     try:
-        f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/"+date)
+        f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/" + date)
     except ConnectionResetError as e:
-        raise(e)
+        raise (e)
     data = f.read().decode('utf-8')
     soup = BeautifulSoup(data, 'html.parser')
     a = soup.select("#main")[0].table.select(".bg_menu2")
@@ -53,8 +52,8 @@ def parse_and_save_menu(a, b, date):
         if place.startswith('두레') or place.startswith('공깡') or place.startswith('상아') or place.startswith('예술'):
             continue
         j = 1
-        while(j <= len(bobs)):
-            if bobs[j-1].contents[0] == '??':
+        while (j <= len(bobs)):
+            if bobs[j - 1].contents[0] == '??':
                 break
             name = bobs[j].replace("(*)", "")
             name = name.replace(" ", '')
@@ -83,7 +82,7 @@ def add_or_pass(place, name, date):
         return
     bob_searched = Bob.objects.filter(place=place_assigned, name=name)
     if bob_searched.count() == 0:
-        Bob(author=admin, place=place_assigned, content=date+'\n', score=-1, name=name).save()
+        Bob(author=admin, place=place_assigned, content=date + '\n', score=-1, name=name).save()
     else:
         x = bob_searched[0]
         x.content = x.content + date + '\n'
@@ -143,4 +142,3 @@ def make_gg():
     Bob(author=admin, name='짬짜면', score=-1, place=gg).save
     Bob(author=admin, name='치킨탕수육', score=-1, place=gg).save()
     # 덮밥류
-

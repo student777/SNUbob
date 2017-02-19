@@ -3,20 +3,16 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
-from .settings_secret import SECRET_KEY
-
+SECRET_KEY = 'u+%@b@g^z87f9@mrf5c)0_9b5wgl9wr(div9-y-em+r!!xym7t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -30,7 +26,6 @@ INSTALLED_APPS = (
     'bobshow',
     'sorl.thumbnail',
     'bootstrap3',
-    'smuggler',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -63,12 +58,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'snubob.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-from .settings_secret import DATABASES
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
 
 
 # Internationalization
@@ -84,20 +80,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'static'),
 ]
-
-
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-

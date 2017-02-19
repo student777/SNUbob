@@ -9,7 +9,7 @@ class Bob(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
-    content = models.TextField(blank=True, null=True,)
+    content = models.TextField(blank=True, null=True, )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     place = models.ForeignKey('Place')
@@ -26,7 +26,7 @@ class Bob(models.Model):
             a = 0
             for i in self.comment_set.all():
                 a = a + i.star
-            score = a/n
+            score = a / n
             self.score = round(float(score), 2)
             self.save()
 
@@ -58,7 +58,7 @@ class Comment(models.Model):
         return str(self.id) + self.content
 
     class Meta:
-        ordering = ('-pk', )
+        ordering = ('-pk',)
 
 
 def pre_on_post_save(sender, **kargs):
@@ -68,5 +68,6 @@ def pre_on_post_save(sender, **kargs):
         if post.image.width > max_width or post.image.height > max_width:
             processed_file = thumbnail(post.image.file, max_width, max_width)
             post.image.save(post.image.name, File(processed_file))
+
 
 pre_save.connect(pre_on_post_save, sender=Bob)

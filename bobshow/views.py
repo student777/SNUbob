@@ -23,7 +23,7 @@ def search(request):
         raise Http404('invalid page {}'.format(page_number))
     return render(request, "bobshow/search.html", {
         'bob_list': page.object_list, 'page': page, 'name': name,
-        })
+    })
 
 
 def detail(request, pk):
@@ -31,14 +31,14 @@ def detail(request, pk):
     comment_form = CommentForm(auto_id=False)
     return render(request, "bobshow/detail.html", {
         'bob': bob, 'comment_form': comment_form,
-        })
+    })
 
 
 def billboard(request):
     bob_list = Bob.objects.order_by('-score')[:10]
     return render(request, "bobshow/billboard.html", {
         'bob_list': bob_list,
-        })
+    })
 
 
 def new(request):

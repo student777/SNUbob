@@ -1,5 +1,6 @@
 import os
 from uuid import uuid4
+
 try:
     from io import BytesIO as StringIO  # python 3
 except ImportError:
@@ -59,5 +60,3 @@ def square_image(input_f, max_size, quality=80):
     max_size = min(image.size[0], image.size[1], max_size)
     image = ImageOps.fit(image, size=(max_size, max_size))
     return image_to_file(image, format, quality)
-
-

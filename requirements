@@ -1,6 +1,5 @@
 sorl-thumbnail
 django-bootstrap3
-django-smuggler
 psycopg2
 pillow
 BeautifulSoup4
