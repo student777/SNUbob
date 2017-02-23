@@ -3,4 +3,4 @@ update_log
 .idea
 migrations/
 db.sqlite3
-media/cache/
+media/

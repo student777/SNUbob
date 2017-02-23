@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from bobshow.models import Bob  # Comment
 from django.contrib.auth.models import User
-from django.contrib import messages
-from bobshow.forms import BobForm, CommentForm, PhotoForm
+from bobshow.forms import CommentForm, ImageForm
 from django.core.paginator import InvalidPage, Paginator
 from django.http import Http404
 
@@ -41,25 +40,6 @@ def billboard(request):
     })
 
 
-def new(request):
-    if request.method == 'POST':
-        form = BobForm(request.POST, request.FILES)
-        if form.is_valid():
-            bob = form.save(commit=False)
-            if request.user.is_authenticated():
-                bob.author = request.user
-            else:
-                bob.author = User.objects.get(username='noname')
-            bob.score = -1
-            bob.save()
-            messages.success(request, "새 글이 등록되었습니다")
-            return redirect('bobshow:detail', bob.id)
-    else:
-        form = BobForm()
-    return render(request, 'form.html', {
-        'form': form, 'title': '식사 평가하기'})
-
-
 def comment_new(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     if request.method == 'POST':
@@ -81,10 +61,10 @@ def comment_new(request, pk):
     return redirect('bobshow:detail', pk)
 
 
-def photo_new(request, pk):
+def add_image(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     if request.method == 'POST':
-        form = PhotoForm(request.POST, request.FILES)
+        form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             photo = form.save(commit=False)
             photo.bob = bob
@@ -95,6 +75,6 @@ def photo_new(request, pk):
             photo.save()
             return redirect('bobshow:detail', pk)
     else:
-        form = PhotoForm()
+        form = ImageForm()
     return render(request, 'form.html', {
         'form': form, 'title': '사진 업로드'})

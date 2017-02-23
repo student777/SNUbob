@@ -6,12 +6,8 @@ from django.conf import settings
 
 
 class Bob(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
-    image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
-    content = models.TextField(blank=True, null=True, )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    date = models.ManyToManyField('Date')
     place = models.ForeignKey('Place')
     score = models.FloatField()
 
@@ -38,12 +34,10 @@ class Place(models.Model):
         return self.name
 
 
-class Photo(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+class Image(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
     bob = models.ForeignKey(Bob)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Comment(models.Model):
@@ -52,13 +46,20 @@ class Comment(models.Model):
     star = models.IntegerField()
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.id) + self.content
 
     class Meta:
         ordering = ('-pk',)
+
+
+class Date(models.Model):
+    time = models.DateField()
+    is_lunch = models.BooleanField()
+
+    def __str__(self):
+        return str(self.time)
 
 
 def pre_on_post_save(sender, **kargs):
@@ -70,4 +71,4 @@ def pre_on_post_save(sender, **kargs):
             post.image.save(post.image.name, File(processed_file))
 
 
-pre_save.connect(pre_on_post_save, sender=Bob)
+pre_save.connect(pre_on_post_save, sender=Image)

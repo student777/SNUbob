@@ -45,7 +45,7 @@
                             {% if bob.score == -1 %}
                             <span>평점 없음</span>
                             {% else %}
-                            <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count|add:"1"}}건)</span>
+                            <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count }}건)</span>
                             {% endif %}
                         </div>
                     </a>
