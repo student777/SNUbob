@@ -39,7 +39,7 @@
                     </div>
                     <div class="media-body">
                     {% if forloop.counter %}
-                        <h3 style="background-color:#FFFF48; margin-top:0px">{{ forloop.counter }}위 평점: {{ bob.score }}<span style="font-size:15px">(총 {{ bob.comment_set.count|add:"1"}}건)</span></h3>
+                        <h3 style="background-color:#FFFF48; margin-top:0px">{{ forloop.counter }}위 평점: {{ bob.score }}<span style="font-size:15px">(총 {{ bob.comment_set.count }}건)</span></h3>
                         <h4 class="media-heading">{{ bob.place.name }}-{{ bob.name }}</h4>
                         <h6>
                         {% for comment in bob.comment_set.all %}

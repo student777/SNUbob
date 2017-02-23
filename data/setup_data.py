@@ -1,5 +1,4 @@
 from bobshow.models import Bob, Place
-from django.contrib.auth.models import User
 
 
 def make_place():
@@ -20,12 +19,11 @@ def make_place():
 
 # 공깡
 def make_gg():
-    admin = User.objects.get(username='admin')
     gg = Place.objects.get(pk=12)
-    Bob(author=admin, name='짜장면', score=-1, place=gg).save()
-    Bob(author=admin, name='짬뽕', score=-1, place=gg).save()
-    Bob(author=admin, name='사천짬뽕', score=-1, place=gg).save()
-    Bob(author=admin, name='사천짜장', score=-1, place=gg).save()
-    Bob(author=admin, name='짬짜면', score=-1, place=gg).save()
-    Bob(author=admin, name='치킨탕수육', score=-1, place=gg).save()
+    Bob(name='짜장면', score=-1, place=gg).save()
+    Bob(name='짬뽕', score=-1, place=gg).save()
+    Bob(name='사천짬뽕', score=-1, place=gg).save()
+    Bob(name='사천짜장', score=-1, place=gg).save()
+    Bob(name='짬짜면', score=-1, place=gg).save()
+    Bob(name='치킨탕수육', score=-1, place=gg).save()
     # 덮밥류

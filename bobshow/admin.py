@@ -9,5 +9,5 @@ admin.site.register(Date)
 
 @admin.register(Bob)
 class BobAdmin(admin.ModelAdmin):
-    list_display = ('name', 'place')
-    search_fields = ('name', 'place__name')
+    list_display = ('name', 'place', 'score')
+    search_fields = ('name', 'place__name', 'score')

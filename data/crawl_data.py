@@ -1,47 +1,46 @@
 import urllib.request
 from bs4 import BeautifulSoup
 import datetime
-from bobshow.models import Bob, Place
-from django.contrib.auth.models import User
+from bobshow.models import Bob, Place, Date
 
 
 def get_menu(year, month, day):
     dt = datetime.date(year, month, day)
-    add_menu(dt.isoformat())
+    add_menu(dt)
 
 
 def update_week_menu():
     dt = datetime.date.today()
     td = datetime.timedelta(days=1)
     for i in range(0, 7):
-        add_menu((dt + i * td).isoformat())
+        add_menu(dt + i * td)
 
 
 def get_menu_today():
     dt = datetime.date.today()
-    add_menu(dt.isoformat())
+    add_menu(dt)
 
 
 def get_menu_year(year):
     dt = datetime.date(year, 1, 1)
     td = datetime.timedelta(days=1)
     for i in range(0, 365):
-        add_menu((dt + i * td).isoformat())
+        add_menu(dt + i * td)
 
 
 def add_menu(date):
     try:
-        f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/" + date)
+        f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/" + date.isoformat())
     except ConnectionResetError as e:
         raise e
     data = f.read().decode('utf-8')
     soup = BeautifulSoup(data, 'html.parser')
     a = soup.select("#main")[0].table.select(".bg_menu2")
     b = soup.select("#main")[0].table.select(".menu")
-    parse_and_save_menu(a, b, date)
+    parse_and_save_menu(a, b)
 
 
-def parse_and_save_menu(a, b, date):
+def parse_and_save_menu(a, b):
     length = len(a)
     for i in range(0, length):
         place = a[i].text
@@ -70,22 +69,20 @@ def parse_and_save_menu(a, b, date):
                     break
             elif place.startswith('감골') and name.startswith('채식'):
                 break
-            add_or_pass(place, name, date)
+            add_or_pass(place, name)
             j += 3
 
 
-def add_or_pass(place, name, date):
-    admin = User.objects.get(username='admin')
+def add_or_pass(place, name):
     place_assigned = assign_place(place)
     if place_assigned is None:
         return
-    bob_searched = Bob.objects.filter(place=place_assigned, name=name)
-    if bob_searched.count() == 0:
-        Bob(author=admin, place=place_assigned, content=date + '\n', score=-1, name=name).save()
-    else:
-        x = bob_searched[0]
-        x.content = x.content + date + '\n'
-        x.save()
+
+    bob = Bob.objects.get_or_create(place=place_assigned, name=name)[0]
+    today = datetime.date.today()
+    date = Date.objects.get_or_create(time=today)[0]
+    bob.date.add(date)
+    bob.save()
 
 
 def assign_place(place):
