@@ -1,119 +1,22 @@
 {% extends "layout.html" %}
 {% load staticfiles %}
-{% block extra_head %}
-<style>
-    #addComment{
-        width:50%;
-    }
-    .icon{
-        color: black;
-        font-size:10px;
-    }
-    .date{
-        font-size: 12px;
-    }
-    .form-group{
-        width:100%;
-        margin-bottom: 10px;
-    }
-    .carousel-inner>.item>img{
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-        height:300px;
-    }
-    #carousel-example-generic{
-        height:300px;
-    }
-</style>
-<link href="{% static "bootstrap-star-rating/css/star-rating.min.css" %}" media="all" rel="stylesheet" type="text/css">
-{% endblock %}
-
-
 {% block extra_script %}
+<link href="{% static "bootstrap-star-rating/css/star-rating.min.css" %}" media="all" rel="stylesheet" type="text/css">
+<link href="{% static "layout_detail.css" %}" media="all" rel="stylesheet" type="text/css">
 <script src="{% static "bootstrap-star-rating/js/star-rating.min.js" %}" type="text/javascript"></script>
 <script>
     $(function(){
-        var tex = $("textarea:first");
-        tex.className = "form-control";
-        tex.attr("rows", "3");
-        tex.css("width", "100%");
-        $("form div").contents().filter(function(){ return this.nodeType != 1; }).remove();
-    });
-    $(function(){
-        $("#comment_form").find("input[name=star]").remove()
-        $("#star_rate").rating();
-        var len = {{ bob.comment_set.count}};
-        for(var i=0;i<len;i++){
-            var k = parseInt($(".stars")[i].innerHTML);
-            var str = '<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>'
-            $(".stars")[i].innerHTML=str.repeat(k);
-        }
+    $("#comment_form").find("input[name=star]").remove()
+    $("#star_rate").rating();
+    var len = {{ bob.comment_set.count}};
+    for(var i=0;i<len;i++){
+        var k = parseInt($(".stars")[i].innerHTML);
+        var str = '<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>'
+        $(".stars")[i].innerHTML=str.repeat(k);
+    }
     })
-    $(function(){
-        $("#comment_form").submit(function() {
-            var url = $(this).attr("action");
-            var content_value = $(this).find("textarea[name=content]").val();
-            var star = $("#star_rate")[0].value;
-            if(content_value ==""){
-                $.toaster({
-                        title: 'fail',
-                        priority: 'danger',
-                        message: '내용을 입력해 주세요'
-                    });
-                return false;
-            }
-            $.ajax({
-                url: url,
-                method: "POST",
-                data: {
-                    content: content_value,
-                    star: star,
-                }
-            }).fail(function() {
-                $.toaster({
-                        title: 'fail',
-                        priority: 'danger',
-                        message: '다시 시도해 주세요'
-                });
-            }).done(function(html) {
-                $("#comment_list").prepend(html);
-                $("#tofade").hide();
-                $.toaster({
-                        title: 'success',
-                        priority: 'success',
-                        message: '새 댓글이 등록되었습니다'
-                });
-                $("textarea")[0].value="";
-            });
-            return false;
-        });
-        $(document).on('click', '#delete_comment', function(){
-            if ( confirm("Are you sure?") ) {
-                var url = $(this).attr("href");
-                var comment_id = $(this).data("comment-id");
-                $.ajax({
-                    url: url,
-                    method: "POST"
-                }).fail(function() {
-                    $.toaster({
-                        title: 'fail',
-                        priority: 'danger',
-                        message: '다시 시도해 주세요'
-                    });
-                }).done(function() {
-                    $("#" + comment_id).remove();
-                    $.toaster({
-                        title: 'success',
-                        priority: 'success',
-                        message: '댓글을 삭제하였습니다'
-                    });
-                });
-            }
-            return false;
-        });
-    });
 </script>
+<script src="{% static "detail.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
