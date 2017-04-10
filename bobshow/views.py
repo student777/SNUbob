@@ -48,10 +48,6 @@ def comment_new(request, pk):
             if request.is_ajax():
                 comment = form.save(commit=False)
                 comment.bob = bob
-                if request.user.is_authenticated():
-                    comment.author = request.user
-                else:
-                    comment.author = User.objects.get(username='noname')
                 comment.star = request.POST['star']
                 comment.save()
                 bob.cal_mean()
@@ -66,13 +62,9 @@ def add_image(request, pk):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            photo = form.save(commit=False)
-            photo.bob = bob
-            if request.user.is_authenticated():
-                photo.author = request.user
-            else:
-                photo.author = User.objects.get(username='noname')
-            photo.save()
+            image = form.save(commit=False)
+            image.bob = bob
+            image.save()
             return redirect('bobshow:detail', pk)
     else:
         form = ImageForm()

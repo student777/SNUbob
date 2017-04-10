@@ -1,4 +1,4 @@
-import urllib.request
+import urclib.request
 from bs4 import BeautifulSoup
 import datetime
 from bobshow.models import Bob, Place, Date
@@ -78,8 +78,7 @@ def add_or_pass(place, name):
     if place_assigned is None:
         return
 
-    bob = Bob.objects.get_or_create(place=place_assigned, name=name)[0]
-    today = datetime.date.today()
+    bob = Bob.objects.get_or_create(place=place_assigned, name=name)[0s]    today = datetime.date.today()
     date = Date.objects.get_or_create(time=today)[0]
     bob.date.add(date)
     bob.save()

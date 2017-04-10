@@ -27,8 +27,8 @@
                                 {% thumbnail bob.image "200x200" crop='center' quality=80 as im %}
                                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
                                 {% endthumbnail %}
-                            {% elif bob.photo_set.first %}
-                                {% thumbnail bob.photo_set.first.image "200x200" crop='center' quality=80 as im %}
+                            {% elif bob.image_set.first %}
+                                {% thumbnail bob.image_set.first.image "200x200" crop='center' quality=80 as im %}
                                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
                                 {% endthumbnail %}
                             {% else %}

@@ -1,5 +1,5 @@
 from django.db import models
-from bobshow.utils import random_name_upload_to, thumbnail
+from bobshow.utils import random_name_upload_to, square_image
 from django.db.models.signals import pre_save
 from django.core.files import File
 from django.conf import settings
@@ -41,7 +41,7 @@ class Image(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    # author = models.ForeignKey(settings.AUTH_USER_MODEL) # TODO: account management
     bob = models.ForeignKey(Bob)
     star = models.IntegerField()
     content = models.TextField()
@@ -56,7 +56,7 @@ class Comment(models.Model):
 
 class Date(models.Model):
     time = models.DateField()
-    is_lunch = models.BooleanField()
+    # is_lunch = models.BooleanField(default=True) # TODO: seperate moring/lunch/night
 
     def __str__(self):
         return str(self.time)
@@ -67,7 +67,7 @@ def pre_on_post_save(sender, **kargs):
     if post.image:
         max_width = 300
         if post.image.width > max_width or post.image.height > max_width:
-            processed_file = thumbnail(post.image.file, max_width, max_width)
+            processed_file = square_image(post.image.file, max_width, max_width)
             post.image.save(post.image.name, File(processed_file))
 
 

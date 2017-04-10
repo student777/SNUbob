@@ -4,3 +4,4 @@ update_log
 migrations/
 db.sqlite3
 media/
+.DS_Store
