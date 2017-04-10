@@ -27,24 +27,18 @@ def search(request):
         page = paginator.page(page_number)
     except InvalidPage:
         raise Http404('invalid page {}'.format(page_number))
-    return render(request, "search.html", {
-        'bob_list': page.object_list, 'page': page, 'name': name,
-    })
+    return render(request, "search.html", {'bob_list': page.object_list, 'page': page, 'name': name})
 
 
 def detail(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     comment_form = CommentForm(auto_id=False)
-    return render(request, "detail.html", {
-        'bob': bob, 'comment_form': comment_form,
-    })
+    return render(request, "detail.html", {'bob': bob, 'comment_form': comment_form,})
 
 
 def billboard(request):
     bob_list = Bob.objects.order_by('-score')[:10]
-    return render(request, "billboard.html", {
-        'bob_list': bob_list,
-    })
+    return render(request, "billboard.html", {'bob_list': bob_list,})
 
 
 def comment_new(request, pk):
@@ -58,9 +52,7 @@ def comment_new(request, pk):
                 comment.star = request.POST['star']
                 comment.save()
                 bob.cal_mean()
-                return render(request, 'comment_row.html', {
-                    'comment': comment,
-                })
+                return render(request, 'comment_row.html', {'comment': comment})
     return redirect('bobshow:detail', pk)
 
 
@@ -75,5 +67,4 @@ def add_image(request, pk):
             return redirect('bobshow:detail', pk)
     else:
         form = ImageForm()
-    return render(request, 'form.html', {
-        'form': form, 'title': '사진 업로드'})
+    return render(request, 'form.html', {'form': form})

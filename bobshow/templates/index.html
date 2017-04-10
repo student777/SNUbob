@@ -1,16 +1,14 @@
 {% extends "layout.html" %}
+
 {% block extra_head %}
 <style>
 .thumbnail .caption div {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-line-clamp: 3; /* 라인수 */
     -webkit-box-orient: vertical;
     word-wrap: break-word;
-}
-.thumbnail .caption {
-    height: 50px;
 }
 </style>
 {% endblock %}
@@ -32,15 +30,16 @@
                             {% load static %}
                             <img src="{% static 'img_default.jpg' %}">
                         {% endif %}
-                        <div class="caption">
-                            <div><strong>{{ bob.name }}</strong><span>-{{bob.place}}</span></div>
-                            {% if bob.score == -1 %}
-                            <span>평점 없음</span>
-                            {% else %}
-                            <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count }}건)</span>
-                            {% endif %}
-                        </div>
                     </a>
+                    <div class="caption">
+                        <strong>{{ bob.name }}</strong><br>
+                        <span>{{bob.place}}</span><br>
+                        {% if bob.score == 0 %}
+                        <span>평점 없음</span>
+                        {% else %}
+                        <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count }}건)</span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% empty %}

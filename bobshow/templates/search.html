@@ -14,14 +14,6 @@
     height: 50px;
 }
 </style>
-<script>
-$("input").keypress(function(event) {
-    if (event.which == 13) {
-        event.preventDefault();
-        $("form").submit();
-    }
-});
-</script>
 {% endblock %}
 
 {% block content %}
@@ -64,4 +56,15 @@ $("input").keypress(function(event) {
     {% endif %}
 </div>
 
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$("input").keypress(function(event) {
+    if (event.which == 13) {
+        event.preventDefault();
+        $("form").submit();
+    }
+});
+</script>
 {% endblock %}

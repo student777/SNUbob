@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load bootstrap3 %}
+
 {% block extra_head %}
 <style>
     #bob_list .media {
@@ -14,6 +15,7 @@
     }
 </style>
 {% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row" id="bob_list">
@@ -45,7 +47,5 @@
             </div>
         {% endfor %}
         </div>
-
     </div>
-
 {% endblock %}
