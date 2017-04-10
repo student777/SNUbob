@@ -1,9 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bobshow.models import Bob  # Comment
+from bobshow.models import Bob, Date
 from django.contrib.auth.models import User
 from bobshow.forms import CommentForm, ImageForm
 from django.core.paginator import InvalidPage, Paginator
 from django.http import Http404
+import datetime
+
+
+def index(request):
+    today = Date.objects.get(time=datetime.date.today())
+    bob_list = Bob.objects.filter(date=today).order_by('place')
+    return render(request, "index.html", {'bob_list': bob_list, 'today': today, })
 
 
 def search(request):
@@ -20,7 +27,7 @@ def search(request):
         page = paginator.page(page_number)
     except InvalidPage:
         raise Http404('invalid page {}'.format(page_number))
-    return render(request, "bobshow/search.html", {
+    return render(request, "search.html", {
         'bob_list': page.object_list, 'page': page, 'name': name,
     })
 
@@ -28,14 +35,14 @@ def search(request):
 def detail(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     comment_form = CommentForm(auto_id=False)
-    return render(request, "bobshow/detail.html", {
+    return render(request, "detail.html", {
         'bob': bob, 'comment_form': comment_form,
     })
 
 
 def billboard(request):
     bob_list = Bob.objects.order_by('-score')[:10]
-    return render(request, "bobshow/billboard.html", {
+    return render(request, "billboard.html", {
         'bob_list': bob_list,
     })
 
@@ -51,7 +58,7 @@ def comment_new(request, pk):
                 comment.star = request.POST['star']
                 comment.save()
                 bob.cal_mean()
-                return render(request, 'bobshow/comment_row.html', {
+                return render(request, 'comment_row.html', {
                     'comment': comment,
                 })
     return redirect('bobshow:detail', pk)

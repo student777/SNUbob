@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% load bootstrap3 %}
-{% load thumbnail %}
 {% block extra_head %}
 <style>
     #bob_list .media {
@@ -19,22 +18,16 @@
 <div class="container">
     <div class="row" id="bob_list">
        {% for bob in bob_list %}
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="media">
                     <div class="media-left">
                         <a href="/bobshow/{{ bob.id }}/">
-                            {% if bob.image %}
-                                {% thumbnail bob.image "200x200" crop='center' quality=80 as im %}
-                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
-                                {% endthumbnail %}
-                            {% elif bob.image_set.first %}
-                                {% thumbnail bob.image_set.first.image "200x200" crop='center' quality=80 as im %}
-                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height}}">
-                                {% endthumbnail %}
-                            {% else %}
-                                {% load static %}
-                                <img src="{% static 'img_default.jpg' %}" width="200px" height="200px">
-                            {% endif %}
+                        {% if bob.image_set.first %}
+                            <img src="{{ bob.image_set.first.image.url }}" height="300" />
+                        {% else %}
+                            {% load static %}
+                            <img src="{% static 'img_default.jpg' %}">
+                        {% endif %}
                         </a>
                     </div>
                     <div class="media-body">

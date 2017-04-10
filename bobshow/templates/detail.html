@@ -36,7 +36,7 @@
             {% endif %}
             <span>식당: {{ bob.place }}</span>
         </div>
-        {% include "bobshow/gallery.html" %}
+        {% include "gallery.html" %}
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">평가하기</div>
@@ -45,7 +45,6 @@
             {% csrf_token %}
             <input id="star_rate" class="rating" data-min="0" data-max="5" data-step="1">
                 {{ comment_form }}
-
                 <input id="addComment" type="submit" value="submit" class="btn btn-default"/>
             </div>
         </form>
@@ -62,7 +61,7 @@
             </thead>
             <tbody>
                 {% for comment  in bob.comment_set.all %}
-                    {% include "bobshow/comment_row.html" %}
+                    {% include "comment_row.html" %}
                 {% empty %}
                     <tr id="tofade"><td>등록된 댓글이 없습니다.</td></tr>
                 {% endfor %}

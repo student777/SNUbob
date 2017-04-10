@@ -20,11 +20,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url "index" %}" id="dd">SNUbob</a>
+            <a class="navbar-brand" href="{% url "bobshow:index" %}" id="dd">SNUbob</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="{% url "index" %}"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>&nbsp;오늘메뉴</a></li>
+                <li><a href="{% url "bobshow:index" %}"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>&nbsp;오늘메뉴</a></li>
                 <li><a href="{% url "bobshow:search" %}"><span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span>&nbsp;검색</a></li>
                 <li><a href="{% url "bobshow:billboard" %}"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;순위</a></li>
             </ul>

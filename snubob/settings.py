@@ -24,7 +24,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bobshow',
-    'sorl.thumbnail',
     'bootstrap3',
 )
 
@@ -43,7 +42,7 @@ ROOT_URLCONF = 'snubob.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'snubob', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'bobshow', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
