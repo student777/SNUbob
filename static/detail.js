@@ -1,15 +1,4 @@
 $(function(){
-    $("#comment_form").find("input[name=star]").remove()
-    $("#star_rate").rating();
-    var len = {{ bob.comment_set.count}};
-    for(var i=0;i<len;i++){
-        var k = parseInt($(".stars")[i].innerHTML);
-        var str = '<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>'
-        $(".stars")[i].innerHTML=str.repeat(k);
-    }
-    $("div.item").first().addClass('active')
-    })
-$(function(){
     var tex = $("textarea:first");
     tex.className = "form-control";
     tex.attr("rows", "3");
