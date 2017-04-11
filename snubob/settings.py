@@ -24,7 +24,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bobshow',
-    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (

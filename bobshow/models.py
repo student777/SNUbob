@@ -2,7 +2,6 @@ from django.db import models
 from bobshow.utils import random_name_upload_to, square_image
 from django.db.models.signals import pre_save
 from django.core.files import File
-from django.conf import settings
 
 
 class Bob(models.Model):

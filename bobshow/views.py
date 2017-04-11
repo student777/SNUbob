@@ -1,9 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from bobshow.models import Bob, Date
-from django.contrib.auth.models import User
 from bobshow.forms import CommentForm, ImageForm
-from django.core.paginator import InvalidPage, Paginator
-from django.http import Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 
 
@@ -14,31 +12,30 @@ def index(request):
 
 
 def search(request):
-    if request.GET.get('name'):
-        name = request.GET.get('name')
-        bob_list = Bob.objects.filter(name__contains=name).order_by('place')
-    else:
-        name = ""
-        bob_list = Bob.objects.all()
-    page_number = int(request.GET.get('page', 1))
-    paginate_by = 32
-    paginator = Paginator(bob_list, paginate_by)
+    name = request.GET.get('name', "")
+    bob_list = Bob.objects.filter(name__contains=name)
+    paginator = Paginator(bob_list, 32)
+    page = request.GET.get('page')
+
     try:
-        page = paginator.page(page_number)
-    except InvalidPage:
-        raise Http404('invalid page {}'.format(page_number))
-    return render(request, "search.html", {'bob_list': page.object_list, 'page': page, 'name': name})
+        bob_paginated = paginator.page(page)
+    except PageNotAnInteger:
+        bob_paginated = paginator.page(1)
+    except EmptyPage:
+        bob_paginated = paginator.page(paginator.num_pages)
+
+    return render(request, 'search.html', {'bob_list': bob_paginated, 'name': name})
 
 
 def detail(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     comment_form = CommentForm(auto_id=False)
-    return render(request, "detail.html", {'bob': bob, 'comment_form': comment_form,})
+    return render(request, "detail.html", {'bob': bob, 'comment_form': comment_form, })
 
 
 def billboard(request):
     bob_list = Bob.objects.order_by('-score')[:10]
-    return render(request, "billboard.html", {'bob_list': bob_list,})
+    return render(request, "billboard.html", {'bob_list': bob_list, })
 
 
 def comment_new(request, pk):
