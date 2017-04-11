@@ -32,7 +32,7 @@ $(function(){
                     message: '다시 시도해 주세요'
             });
         }).done(function(html) {
-            $("#comment_list").prepend(html);
+            $("#comment_list").append(html);
             $("#tofade").hide();
             $.toaster({
                     title: 'success',

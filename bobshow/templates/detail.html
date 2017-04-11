@@ -34,14 +34,14 @@
         <table class="table" id="comment_list">
             <thead>
                 <tr>
-                <th>#</th>
+                <th>#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><!-- prevent push when comment append -->
                 <th>별점</th>
                 <th>내용</th>
                 <th>날짜</th>
                 </tr>
             </thead>
             <tbody>
-                {% for comment  in bob.comment_set.all %}
+                {% for comment in bob.comment_set.all %}
                     {% include "comment_row.html" %}
                 {% empty %}
                     <tr id="tofade"><td>등록된 댓글이 없습니다.</td></tr>
@@ -58,16 +58,9 @@
 <script src="{% static "bootstrap-star-rating/js/star-rating.min.js" %}" type="text/javascript"></script>
 <script src="{% static "detail.js" %}" type="text/javascript"></script>
 <script>
-// star-rate settings
 $(function(){
     $("#comment_form").find("input[name=star]").remove()
     $("#star_rate").rating();
-    var len = {{ bob.comment_set.count}};
-    for(var i=0;i<len;i++){
-        var k = parseInt($(".stars")[i].innerHTML);
-        var str = '<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>'
-        $(".stars")[i].innerHTML=str.repeat(k);
-    }
     $("div.item").first().addClass('active')
 })
 </script>
