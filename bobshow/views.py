@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bobshow.models import Bob, Date
-from bobshow.forms import CommentForm, ImageForm
+from bobshow.models import Bob, Date, Image
+from bobshow.forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
+from django.http import HttpResponse
 
 
 def index(request):
@@ -56,12 +57,7 @@ def comment_new(request, pk):
 def add_image(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
-            image.bob = bob
-            image.save()
-            return redirect('bobshow:detail', pk)
-    else:
-        form = ImageForm()
-    return render(request, 'form.html', {'form': form})
+        image = request.FILES['image']
+        img = Image(image=image, bob=bob)
+        img.save()  # Image.objects.create raises an Integerity error...?
+        return HttpResponse(status=201)

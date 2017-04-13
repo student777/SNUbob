@@ -4,7 +4,7 @@
         {% for image in bob.image_set.all %}
             <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" class=""></li>
         {% empty %}
-            <a href="{% url 'bobshow:image_new' bob.pk %}">등록된 사진이 없습니다. 사진을 올려주세요</a>
+            <p>등록된 사진이 없습니다. 사진을 올려주세요</p>
         {% endfor %}
     </ol>
     <div class="carousel-inner" role="listbox">

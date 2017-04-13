@@ -34,7 +34,7 @@ class Place(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(blank=True, null=True, upload_to=random_name_upload_to)
+    image = models.ImageField(upload_to=random_name_upload_to)
     bob = models.ForeignKey(Bob)
     created_at = models.DateTimeField(auto_now_add=True)
 

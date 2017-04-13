@@ -1,3 +1,4 @@
+// comment
 $(function(){
     var tex = $("textarea:first");
     tex.className = "form-control";
@@ -5,6 +6,16 @@ $(function(){
     tex.css("width", "100%");
     $("form div").contents().filter(function(){ return this.nodeType != 1; }).remove();
 });
+
+
+// star
+$(function(){
+    $("#comment_form").find("input[name=star]").remove()
+    $("#star_rate").rating();
+    $("div.item").first().addClass('active')
+})
+
+// toaster
 $(function(){
     $("#comment_form").submit(function() {
         var url = $(this).attr("action");
@@ -68,3 +79,25 @@ $(function(){
         return false;
     });
 });
+
+// image upload
+$(function() {
+    $("input[type='file']").change( function() {
+        $file = $(this).val();
+        if ($file == null || $.isEmptyObject($file)) return;
+        var formData = new FormData(document.getElementById('image_form'));
+        $.ajax({
+            url : "/" + bob_id + "/add_image/",
+            data : formData,
+            processData : false,
+            contentType : false,
+            type : "POST",
+            success : function(response) {
+                location.href = '';
+            },
+            error : function(xhr, status, error) {
+                console.error(status + " : " + error);
+            }
+        })
+    })
+})
