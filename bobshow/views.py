@@ -1,14 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bobshow.models import Bob, Date, Image
+from bobshow.models import Bob, Date, Image, Place
 from bobshow.forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import datetime
 from django.http import HttpResponse
+import datetime
 
 
 def index(request):
     today = Date.objects.get(time=datetime.date.today())
-    bob_list = Bob.objects.filter(date=today).order_by('place')
+    bob_list = []
+    for place in Place.objects.all():
+        bobs = Bob.objects.filter(date=today, place=place)
+        bob_list.append((bobs, place))
+
     return render(request, "index.html", {'bob_list': bob_list, 'today': today, })
 
 

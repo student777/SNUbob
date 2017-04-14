@@ -8,7 +8,7 @@ class Bob(models.Model):
     name = models.CharField(max_length=255)
     date = models.ManyToManyField('Date')
     place = models.ForeignKey('Place')
-    score = models.FloatField(default=0)
+    score = models.FloatField(default=0)  # denormalization..?
 
     def __str__(self):
         return self.place.name + '/' + self.name

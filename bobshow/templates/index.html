@@ -15,37 +15,38 @@
 
 {% block content %}
 <div class="container">
+    <h4>{{ today }}의 메뉴</h4>   
+    {% for bobs, place in bob_list %}        
     <div class="row">
         <div class="panel-heading">
-        {{ today }}의 메뉴
+            <h4>{{ place.name }}</h4>
         </div>
-        <div class="col-sm-12">
-        {% for bob in bob_list %}
-            <div class="col-xs-6 col-sm-4 col-md-3">
-                <div class="thumbnail">
-                    <a href="{% url "bobshow:detail" bob.pk %}">
-                        {% if bob.image_set.first %}
-                            <img src="{{ bob.image_set.first.image.url }}" height="300" />
-                        {% else %}
-                            {% load static %}
-                            <img src="{% static 'img_default.jpg' %}">
-                        {% endif %}
-                    </a>
-                    <div class="caption">
-                        <strong>{{ bob.name }}</strong><br>
-                        <span>{{bob.place}}</span><br>
-                        {% if bob.score == 0 %}
-                        <span>평점 없음</span>
-                        {% else %}
-                        <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count }}건)</span>
-                        {% endif %}
-                    </div>
+        {% for bob in bobs %}
+        <div class="col-xs-6 col-sm-4 col-md-3">
+            <div class="thumbnail">
+                <a href="{% url "bobshow:detail" bob.pk %}">
+                    {% if bob.image_set.first %}
+                        <img src="{{ bob.image_set.first.image.url }}" height="300" />
+                    {% else %}
+                        {% load static %}
+                        <img src="{% static 'img_default.jpg' %}">
+                    {% endif %}
+                </a>
+                <div class="caption">
+                    <strong>{{ bob.name }}</strong><br>
+                    {% if bob.score == 0 %}
+                    <span>평점 없음</span>
+                    {% else %}
+                    <span>평점:&nbsp;{{ bob.score }}/5.0(총 {{ bob.comment_set.count }}건)</span>
+                    {% endif %}
                 </div>
             </div>
-        {% empty %}
-        <div class="alert alert-warning">검색 결과가 없습니다.</div>
-        {% endfor %}
         </div>
+        {% endfor %}
+        <hr>
     </div>
+    {% empty %}
+    <div class="alert alert-warning">검색 결과가 없습니다.</div>
+    {% endfor %}
 </div>
 {% endblock %}
