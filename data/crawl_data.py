@@ -29,18 +29,13 @@ def get_menu_year(year):
 
 
 def add_menu(date):
-    try:
-        f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/" + date.isoformat())
-    except ConnectionResetError as e:
-        raise e
+    f = urllib.request.urlopen("http://mini.snu.kr/cafe/set/" + date.isoformat())
     data = f.read().decode('utf-8')
     soup = BeautifulSoup(data, 'html.parser')
     a = soup.select("#main")[0].table.select(".bg_menu2")
     b = soup.select("#main")[0].table.select(".menu")
-    parse_and_save_menu(a, b)
 
-
-def parse_and_save_menu(a, b):
+    # parse and save the menu
     length = len(a)
     for i in range(0, length):
         place = a[i].text
@@ -51,8 +46,16 @@ def parse_and_save_menu(a, b):
             continue
         j = 1
         while j <= len(bobs):
+            try:
+                bobs[j - 1].contents[0]
+            except AttributeError:
+                print('error')
+                print(bobs)
+                break
+
             if bobs[j - 1].contents[0] == '??':
                 break
+
             name = bobs[j].replace("(*)", "")
             name = name.replace(" ", '')
             name = name.replace("\n", '')
@@ -69,18 +72,19 @@ def parse_and_save_menu(a, b):
                     break
             elif place.startswith('감골') and name.startswith('채식'):
                 break
-            add_or_pass(place, name)
+            add_or_pass(place, name, date)
             j += 3
 
+    print('got ' + date.isoformat())
 
-def add_or_pass(place, name):
+
+def add_or_pass(place, name, date):
     place_assigned = assign_place(place)
     if place_assigned is None:
         return
 
-    bob = Bob.objects.get_or_create(place=place_assigned, name=name)[0]    
-    today = datetime.date.today()
-    date = Date.objects.get_or_create(time=today)[0]
+    bob = Bob.objects.get_or_create(place=place_assigned, name=name)[0]
+    date = Date.objects.get_or_create(time=date)[0]
     bob.date.add(date)
     bob.save()
 
