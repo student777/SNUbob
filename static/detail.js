@@ -1,27 +1,14 @@
-// comment
 $(function(){
-    var tex = $("textarea:first");
-    tex.className = "form-control";
-    tex.attr("rows", "3");
-    tex.css("width", "100%");
-    $("form div").contents().filter(function(){ return this.nodeType != 1; }).remove();
-});
-
-
-// star
-$(function(){
-    $("#comment_form").find("input[name=star]").remove()
-    $("#star_rate").rating();
-    $("div.item").first().addClass('active')
+    $("div.item").first().addClass('active');
 })
 
 // toaster
 $(function(){
     $("#comment_form").submit(function() {
         var url = $(this).attr("action");
-        var content_value = $(this).find("textarea[name=content]").val();
-        var star = $("#star_rate")[0].value;
-        if(content_value ==""){
+        var content = $(this).find("input[name=content]").val();
+        var star = $(this).find("select[name=star]").val();
+        if(content ==""){
             $.toaster({
                     title: 'fail',
                     priority: 'danger',
@@ -33,7 +20,7 @@ $(function(){
             url: url,
             method: "POST",
             data: {
-                content: content_value,
+                content: content,
                 star: star,
             }
         }).fail(function() {
@@ -50,32 +37,8 @@ $(function(){
                     priority: 'success',
                     message: '새 댓글이 등록되었습니다'
             });
-            $("textarea")[0].value="";
+            $("input[name=content]")[0].value="";
         });
-        return false;
-    });
-    $(document).on('click', '#delete_comment', function(){
-        if ( confirm("Are you sure?") ) {
-            var url = $(this).attr("href");
-            var comment_id = $(this).data("comment-id");
-            $.ajax({
-                url: url,
-                method: "POST"
-            }).fail(function() {
-                $.toaster({
-                    title: 'fail',
-                    priority: 'danger',
-                    message: '다시 시도해 주세요'
-                });
-            }).done(function() {
-                $("#" + comment_id).remove();
-                $.toaster({
-                    title: 'success',
-                    priority: 'success',
-                    message: '댓글을 삭제하였습니다'
-                });
-            });
-        }
         return false;
     });
 });

@@ -49,9 +49,6 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.id) + self.content
 
-    class Meta:
-        ordering = ('-pk',)
-
 
 class Date(models.Model):
     time = models.DateField()

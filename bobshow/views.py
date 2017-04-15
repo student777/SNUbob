@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from bobshow.models import Bob, Date, Image, Place
-from bobshow.forms import CommentForm
+from bobshow.models import Bob, Date, Image, Place, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 import datetime
@@ -34,8 +33,7 @@ def search(request):
 
 def detail(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
-    comment_form = CommentForm(auto_id=False)
-    return render(request, "detail.html", {'bob': bob, 'comment_form': comment_form, })
+    return render(request, "detail.html", {'bob': bob})
 
 
 def billboard(request):
@@ -46,16 +44,12 @@ def billboard(request):
 def comment_new(request, pk):
     bob = get_object_or_404(Bob, pk=pk)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            if request.is_ajax():
-                comment = form.save(commit=False)
-                comment.bob = bob
-                comment.star = request.POST['star']
-                comment.save()
-                bob.cal_mean()
-                return render(request, 'comment_row.html', {'comment': comment})
-    return redirect('bobshow:detail', pk)
+        if request.is_ajax():
+            content = request.POST['content']
+            star = request.POST['star']
+            comment = Comment.objects.create(content=content, star=star, bob=bob)
+            bob.cal_mean()
+            return render(request, 'comment_row.html', {'comment': comment})
 
 
 def add_image(request, pk):
